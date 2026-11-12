@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChaosAI — Experimentation Hub & Sandbox</title>
+  <meta name="description" content="ChaosAI Experimentation Hub: Design, configure, stress-test, and benchmark autonomous AI behaviors under chaotic and adversarial conditions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header / Navbar -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-symbol">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">ChaosAI</span>
+          <span class="brand-subtitle">Resilience & Entropy Testing Lab</span>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button class="nav-btn active" data-tab="lab" id="navLabBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
+          Chaos Lab
+        </button>
+        <button class="nav-btn" data-tab="builder" id="navBuilderBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Experiment Builder
+        </button>
+        <button class="nav-btn" data-tab="history" id="navHistoryBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Test Vault (<span id="historyCount">0</span>)
+        </button>
+        <button class="nav-btn" data-tab="matrix" id="navMatrixBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          Fault Vectors
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="status-indicator">
+          <span class="pulse-dot"></span>
+          <span class="status-text" id="engineStatus">Engine Online</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btnQuickSample">
+          Preset Scenarios
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      <!-- TAB 1: CHAOS LAB / ACTIVE EXPERIMENT -->
+      <section class="tab-pane active" id="tabLab">
+        <div class="lab-grid">
+          <!-- Left Column: Experiment Controls & Selector -->
+          <div class="lab-sidebar">
+            <div class="glass-panel">
+              <div class="panel-header">
+                <h3>Select Experiment</h3>
+                <span class="badge" id="expCategoryBadge">Autonomous Agent</span>
+              </div>
+              <div class="form-group">
+                <label for="experimentSelector">Preset or Custom Scenario</label>
+                <select id="experimentSelector" class="form-control select-custom">
+                  <!-- Injected via JS -->
+                </select>
+              </div>
+
+              <div class="exp-summary" id="expSummaryBox">
+                <h4 id="expTitle">Recursive Loop Agent Under Tool Denial</h4>
+                <p id="expDescription">Evaluates agent loop recovery and budget exhaustion guardrails when tool outputs degrade into semantic errors, latency spikes, and infinite retries.</p>
+                <div class="meta-tags" id="expTags">
+                  <span class="tag">LLM Reasoning</span>
+                  <span class="tag">Network Partitions</span>
+                  <span class="tag">Context Drift</span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="panel-header">
+                <h3>Chaos Injection Controls</h3>
+                <span class="badge badge-warning" id="entropyLevelDisplay">Entropy: 45%</span>
+              </div>
+
+              <div class="control-row">
+                <label for="entropySlider">
+                  <span>Adversarial Entropy</span>
+                  <span class="sub-label">Probability of unexpected state shifts</span>
+                </label>
+                <input type="range" id="entropySlider" min="0" max="100" value="45" class="range-slider">
+              </div>
+
+              <div class="control-row">
+                <label for="latencySlider">
+                  <span>Simulated Latency Jitter</span>
+                  <span class="sub-label" id="latencyDisplay">280ms ± 150ms</span>
+                </label>
+                <input type="range" id="latencySlider" min="10" max="1500" value="280" step="10" class="range-slider">
+              </div>
+
+              <div class="control-row">
+                <label for="hallucinationPressure">
+                  <span>Adversarial Prompt Injection Rate</span>
+                  <span class="sub-label" id="pressureDisplay">30% perturbation</span>
+                </label>
+                <input type="range" id="hallucinationPressure" min="0" max="100" value="30" class="range-slider">
+              </div>
+
+              <div class="fault-toggles">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="faultContextPrune" checked>
+                  <span class="chk-box"></span>
+                  <span>Sudden Context Window Truncation</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="faultToolCorrupt" checked>
+                  <span class="chk-box"></span>
+                  <span>Malformed JSON Tool Outputs</span>
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="faultByzantine" checked>
+                  <span class="chk-box"></span>
+                  <span>Byzantine Peer Consensus (Multi-agent)</span>
+                </label>
+              </div>
+
+              <div class="action-buttons">
+                <button class="btn btn-primary btn-block" id="btnRunExperiment">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Run Experiment
+                </button>
+                <button class="btn btn-secondary btn-block" id="btnResetLab">
+                  Reset State
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Live Telemetry, Execution Canvas, and Terminal Log -->
+          <div class="lab-viewport">
+            <!-- Metric KPI Row -->
+            <div class="telemetry-bar">
+              <div class="metric-card">
+                <div class="metric-label">Resilience Score</div>
+                <div class="metric-value" id="kpiResilience">92%</div>
+                <div class="metric-sub" id="kpiResilienceTrend">+4.2% baseline</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Hallucination Index</div>
+                <div class="metric-value" id="kpiHallucination">0.14</div>
+                <div class="metric-sub text-danger" id="kpiHallucinationTrend">Low anomaly risk</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Tokens / Budget Burn</div>
+                <div class="metric-value" id="kpiTokens">4,820</div>
+                <div class="metric-sub" id="kpiTokensBudget">Max: 16,000</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Recovery Latency</div>
+                <div class="metric-value" id="kpiRecovery">312ms</div>
+                <div class="metric-sub" id="kpiRecoverySub">Auto-heal active</div>
+              </div>
+            </div>
+
+            <!-- Visual State Graph / Chaos Canvas -->
+            <div class="glass-panel canvas-panel">
+              <div class="panel-header">
+                <div class="title-with-actions">
+                  <h3>Agent Neural & Topology State Graph</h3>
+                  <span class="sub-label">Simulating autonomous reasoning nodes, tool bridges, and fault impact</span>
+                </div>
+                <div class="canvas-legend">
+                  <span class="legend-item"><span class="dot healthy"></span> Nominal</span>
+                  <span class="legend-item"><span class="dot stressed"></span> Stressed</span>
+                  <span class="legend-item"><span class="dot failing"></span> Fault Injected</span>
+                  <span class="legend-item"><span class="dot recovered"></span> Self-Healed</span>
+                </div>
+              </div>
+              <div class="canvas-wrapper">
+                <canvas id="chaosCanvas" width="800" height="340"></canvas>
+                <div class="canvas-overlay" id="canvasOverlay">
+                  <span class="overlay-badge">SIMULATION IDLE</span>
+                  <p>Click "Run Experiment" to stream real-time chaos perturbation and agent self-healing.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Terminal Execution Stream -->
+            <div class="glass-panel console-panel">
+              <div class="panel-header">
+                <div class="terminal-header-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                  <span>Chaos Agent Telemetry & Reasoning Log</span>
+                </div>
+                <div class="console-tools">
+                  <button class="btn-icon" id="btnClearLogs" title="Clear log">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                  <button class="btn-icon" id="btnExportLog" title="Save JSON Report">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="terminal-body" id="terminalOutput">
+                <div class="log-line text-muted">[00:00:00] ChaosAI Test Harness v2.4 initialized. Ready for experiment execution.</div>
+                <div class="log-line text-info">[00:00:01] Pre-flight: Connected to simulated agent cluster (5 nodes, 3 tool bindings).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: EXPERIMENT BUILDER -->
+      <section class="tab-pane" id="tabBuilder">
+        <div class="builder-container">
+          <div class="builder-header">
+            <h2>Create New ChaosAI Experiment</h2>
+            <p>Define custom agent topologies, specify adversarial failure vectors, and configure automated grading criteria.</p>
+          </div>
+
+          <form id="builderForm" class="builder-form-grid">
+            <div class="glass-panel">
+              <h3 class="section-title">1. Scenario Definition</h3>
+              
+              <div class="form-group">
+                <label for="bExpName">Experiment Name *</label>
+                <input type="text" id="bExpName" class="form-control" placeholder="e.g. Memory Poisoning via Retrieval Manipulation" required>
+              </div>
+
+              <div class="form-group">
+                <label for="bExpCategory">Target Architecture Category</label>
+                <select id="bExpCategory" class="form-control">
+                  <option value="Agentic Loop">Autonomous Agentic Loop (ReAct / Plan-and-Solve)</option>
+                  <option value="Multi-Agent System">Multi-Agent Swarm / Byzantine Consensus</option>
+                  <option value="RAG & Knowledge">RAG & Vector Memory Pipeline</option>
+                  <option value="Tool & API Calling">Tool Execution & API Integration Bridge</option>
+                  <option value="Safety & Alignment">Guardrails & Adversarial Jailbreak Defense</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="bExpDesc">Objective & Hypothesis *</label>
+                <textarea id="bExpDesc" class="form-control" rows="3" placeholder="Describe what failure mode is being tested and what behavior determines a pass or fail..." required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="bPromptContext">Base System Directive / Agent Prompt</label>
+                <textarea id="bPromptContext" class="form-control font-mono" rows="3" placeholder="You are an autonomous operations coordinator tasked with maintaining service uptime..."></textarea>
+              </div>
+            </div>
+
+            <div class="glass-panel">
+              <h3 class="section-title">2. Chaos & Fault Vector Configuration</h3>
+
+              <div class="form-group">
+                <label>Primary Perturbation Class</label>
+                <div class="radio-cards">
+                  <label class="radio-card">
+                    <input type="radio" name="perturbationType" value="semantic" checked>
+                    <div class="radio-card-content">
+                      <span class="rc-title">Semantic Noise</span>
+                      <span class="rc-desc">Injects subtle logical fallacies, contradictory premises & hallucination traps</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="perturbationType" value="protocol">
+                    <div class="radio-card-content">
+                      <span class="rc-title">Protocol & Tool Rupture</span>
+                      <span class="rc-desc">Simulates broken schemas, rate limits, timeouts, and corrupted payloads</span>
+                    </div>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="perturbationType" value="cognitive">
+                    <div class="radio-card-content">
+                      <span class="rc-title">Cognitive Overload</span>
+                      <span class="rc-desc">Massive context flooding, distraction tokens, and conflicting tool priorities</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="bMaxIterations">Max Simulation Steps</label>
+                  <input type="number" id="bMaxIterations" class="form-control" value="8" min="3" max="25">
+                </div>
+                <div class="form-group col">
+                  <label for="bBaseEntropy">Default Entropy (%)</label>
+                  <input type="number" id="bBaseEntropy" class="form-control" value="50" min="0" max="100">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Autonomous Healing Strategy Expected</label>
+                <select id="bHealStrategy" class="form-control">
+                  <option value="backoff_reflect">Self-Reflection & Algorithmic Exponential Backoff</option>
+                  <option value="tool_reroute">Dynamic Tool Re-Routing / Fallback Provider</option>
+                  <option value="state_rollback">State Checkpoint Rollback & Tree Search</option>
+                  <option value="consensus_vote">Multi-agent Quorum Voting & Anomaly Eviction</option>
+                </select>
+              </div>
+
+              <div class="form-actions mt-4">
+                <button type="submit" class="btn btn-primary" id="btnSaveExperiment">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                  Save & Stage in Lab
+                </button>
+                <button type="reset" class="btn btn-secondary">Clear Form</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 3: TEST VAULT / BENCHMARK RESULTS -->
+      <section class="tab-pane" id="tabHistory">
+        <div class="vault-container">
+          <div class="vault-header">
+            <div>
+              <h2>ChaosAI Experiment Vault</h2>
+              <p>Historical runs, resilience benchmarks, and failure mode diagnostics.</p>
+            </div>
+            <div class="vault-actions">
+              <button class="btn btn-secondary btn-sm" id="btnExportAllCsv">
+                Export Benchmark CSV
+              </button>
+              <button class="btn btn-danger btn-sm" id="btnClearHistory">
+                Clear Vault
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-panel table-panel">
+            <div class="table-responsive">
+              <table class="data-table" id="runsTable">
+                <thead>
+                  <tr>
+                    <th>Run ID</th>
+                    <th>Experiment Name</th>
+                    <th>Category</th>
+                    <th>Entropy</th>
+                    <th>Resilience</th>
+                    <th>Recovery</th>
+                    <th>Status</th>
+                    <th>Executed At</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="runsTableBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: FAULT VECTORS & CHAOS CATALOG -->
+      <section class="tab-pane" id="tabMatrix">
+        <div class="matrix-container">
+          <div class="matrix-header">
+            <h2>Chaos Fault Vector Taxonomy</h2>
+            <p>Comprehensive catalogue of stress triggers, cognitive attacks, and system failures evaluated by ChaosAI.</p>
+          </div>
+
+          <div class="matrix-cards-grid" id="vectorCatalog">
+            <!-- Dynamic Vector Cards loaded via JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Run Modal / Detailed Result Viewer -->
+    <div class="modal-backdrop" id="runModal">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3 id="modalTitle">Experiment Execution Details</h3>
+          <button class="modal-close" id="btnModalClose">&times;</button>
+        </div>
+        <div class="modal-body" id="modalContent">
+          <!-- Content rendered on run inspect -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btnModalDismiss">Close</button>
+          <button class="btn btn-primary" id="btnModalReRun">Re-Test in Lab</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="experiments.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
