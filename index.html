@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChaosAI — Weather AI Experiment (Project 1)</title>
-  <meta name="description" content="ChaosAI Weather Experiment: 3 simple steps to download year data, train an AI, and ask tomorrow's temperature compared to the real weather model.">
+  <title>ChaosAI — 7-Day Weather AI vs Real Weather Model (2000 Epochs)</title>
+  <meta name="description" content="ChaosAI Weather Experiment: 2000-Epoch Neural Network trained on 365 days of temperature and cloud coverage, forecasting 7 days ahead compared with actual weather model.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
         </div>
         <div class="brand-text">
           <span class="brand-title">ChaosAI</span>
-          <span class="brand-subtitle">Project 1: Weather Pattern Predictor</span>
+          <span class="brand-subtitle">Project 1: 7-Day Weather AI & Real Model Benchmark</span>
         </div>
       </div>
       <div class="header-right">
@@ -34,8 +34,8 @@
     <!-- Main Container: 3 Simple Steps -->
     <main class="simple-main">
       <div class="intro-banner">
-        <h2>3-Step Weather AI Experiment</h2>
-        <p>Give an AI one full year of daily temperatures and cloud coverage for any location. Train it. Then ask it tomorrow's temperature and compare its answer directly against the real weather model forecast.</p>
+        <h2>7-Day Weather AI Experiment (2000 Epochs)</h2>
+        <p>A true backpropagation deep neural network trained with Adam optimizer on 365 days of temperature and cloud coverage. Evaluates continuous change across a full 7-day multi-step rollout against actual weather models.</p>
       </div>
 
       <!-- Step Cards Container -->
@@ -46,7 +46,7 @@
           <div class="step-badge">STEP 1</div>
           <div class="step-header">
             <h3>Get Temperature & Cloud Coverage (365 Days)</h3>
-            <p>Pick a location and download 1 year of daily temperature and cloud coverage.</p>
+            <p>Pick a location and download 1 full year of daily temperature & cloud coverage data.</p>
           </div>
 
           <div class="step-body">
@@ -90,19 +90,19 @@
           </div>
         </section>
 
-        <!-- STEP 2: TRAIN AI -->
+        <!-- STEP 2: TRAIN (2000 EPOCHS) -->
         <section class="step-card" id="cardStep2">
           <div class="step-badge">STEP 2</div>
           <div class="step-header">
-            <h3>Train the AI</h3>
-            <p>The AI learns the patterns connecting cloud coverage and seasonal trends to tomorrow's temperature.</p>
+            <h3>Train Neural Network (2,000 Epochs)</h3>
+            <p>Real AI (Gradient Descent with Backpropagation and Adam). Learns thermal inertia, cloud radiative forcing, and seasonal velocity over 2,000 training passes.</p>
           </div>
 
           <div class="step-body">
             <div class="train-controls">
               <button class="btn btn-primary btn-large" id="btnTrain">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                TRAIN AI
+                TRAIN AI (2,000 EPOCHS)
               </button>
               <div class="train-status" id="trainStatus">Status: Ready to train</div>
             </div>
@@ -115,7 +115,7 @@
             <!-- Training Loss Curve -->
             <div class="chart-box" style="margin-top: 14px;">
               <div class="chart-header">
-                <span>AI Learning Curve (Error per Epoch)</span>
+                <span>Learning Curve Across 2,000 Epochs (Loss / RMSE)</span>
                 <span id="lossVal" class="font-mono text-muted">Untrained</span>
               </div>
               <canvas id="canvasLoss" height="130"></canvas>
@@ -123,59 +123,75 @@
           </div>
         </section>
 
-        <!-- STEP 3: ASK & COMPARE -->
+        <!-- STEP 3: 7-DAY FORECAST & BENCHMARK -->
         <section class="step-card highlight" id="cardStep3">
           <div class="step-badge">STEP 3</div>
           <div class="step-header">
-            <h3>Ask: "What's the temperature tomorrow?"</h3>
-            <p>Ask the trained AI for tomorrow's prediction and compare it directly to the real weather model.</p>
+            <h3>7-Day Forecast & Accuracy Benchmark</h3>
+            <p>Ask the trained AI for the full 7-day future temperature progression and compare each day against the actual weather model.</p>
           </div>
 
           <div class="step-body">
             <div class="ask-box">
               <div class="ask-prompt">
-                <span class="ask-label">Question:</span>
-                <span class="ask-text" id="askQuestionText">"What is the temperature tomorrow at San Francisco, CA?"</span>
+                <span class="ask-label">Continuous 7-Day Rollout:</span>
+                <span class="ask-text" id="askQuestionText">"Predict temperatures from Tomorrow (Day +1) to Day +7 at San Francisco, CA"</span>
               </div>
-              <button class="btn btn-primary" id="btnAskAi" disabled>
-                Ask Tomorrow's Temperature
+              <button class="btn btn-primary btn-large" id="btnAskAi" disabled>
+                Forecast 7 Days Ahead
               </button>
             </div>
 
             <!-- The Output & Comparison Display -->
             <div class="result-showcase" id="resultShowcase">
-              <div class="comparison-cards">
-                <div class="comp-card ai-card">
-                  <div class="comp-title">AI Predicted Tomorrow</div>
-                  <div class="comp-val" id="resAiTemp">--</div>
-                  <div class="comp-sub" id="resAiSub">Neural Network Output</div>
+              <!-- Overall Accuracy Scorecard -->
+              <div class="accuracy-hero-banner" id="accuracyHero" style="display: none;">
+                <div class="hero-left">
+                  <div class="hero-label">7-Day Overall Closeness to Actual Weather Model</div>
+                  <div class="hero-val" id="overallAccuracyVal">--%</div>
+                  <div class="hero-sub" id="heroSubText">Based on Mean Absolute Error across all 7 forecast days</div>
                 </div>
-
-                <div class="comp-vs">VS</div>
-
-                <div class="comp-card model-card">
-                  <div class="comp-title">Actual Weather Model</div>
-                  <div class="comp-val" id="resModelTemp">--</div>
-                  <div class="comp-sub" id="resModelSub">NWP Forecast / Ground Truth</div>
+                <div class="hero-right">
+                  <div class="metric-mini">
+                    <span class="lbl">Tomorrow (Day +1)</span>
+                    <strong class="val" id="day1Compare">-- vs --</strong>
+                  </div>
+                  <div class="metric-mini">
+                    <span class="lbl">7-Day Avg Error</span>
+                    <strong class="val" id="avgErrorVal">--</strong>
+                  </div>
                 </div>
               </div>
 
-              <!-- Difference / Verdict Banner -->
-              <div class="verdict-banner" id="verdictBanner" style="display: none;">
-                <div class="verdict-main">
-                  <span class="verdict-tag" id="verdictTag">MATCH</span>
-                  <span class="verdict-text" id="verdictText">Difference: 0.4°C</span>
-                </div>
-                <p class="verdict-desc" id="verdictDesc">The AI closely learned the weather pattern from the temperature and cloud coverage history!</p>
-              </div>
-
-              <!-- 30-Day Evaluation Chart -->
-              <div class="chart-box" id="testChartBox" style="display: none; margin-top: 16px;">
+              <!-- 7-DAY COMPARISON GRAPH -->
+              <div class="chart-box" id="sevenDayChartBox" style="display: none; margin-top: 16px;">
                 <div class="chart-header">
-                  <span>30-Day Testing Run & Tomorrow's Forecast</span>
-                  <span class="legend-note"><span class="legend-dot actual"></span> Actual &nbsp; <span class="legend-dot ai"></span> AI Prediction</span>
+                  <span>7-Day Direct Comparison: AI vs Actual Weather Model</span>
+                  <span class="legend-note">
+                    <span class="legend-dot ai"></span> AI Prediction &nbsp;
+                    <span class="legend-dot actual"></span> Actual Weather Model (NWP)
+                  </span>
                 </div>
-                <canvas id="canvasCompare" height="150"></canvas>
+                <canvas id="canvasSevenDay" height="180"></canvas>
+              </div>
+
+              <!-- 7-Day Breakdown Table -->
+              <div class="table-responsive" id="sevenDayTableWrap" style="display: none; margin-top: 16px;">
+                <table class="seven-day-table" id="sevenDayTable">
+                  <thead>
+                    <tr>
+                      <th>Day</th>
+                      <th>Forecast Date</th>
+                      <th>AI Predicted</th>
+                      <th>Actual Model</th>
+                      <th>Difference</th>
+                      <th>Closeness</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sevenDayTableBody">
+                    <!-- Injected dynamically via weather-lab.js -->
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -186,7 +202,7 @@
 
     <!-- Footer -->
     <footer class="simple-footer">
-      <span>ChaosAI • Clean 3-Step Weather Pattern Experiment</span>
+      <span>ChaosAI • 7-Day Neural Network Weather Benchmark (2,000 Epochs)</span>
     </footer>
   </div>
 
