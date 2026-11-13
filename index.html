@@ -44,6 +44,10 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
           Fault Vectors
         </button>
+        <button class="nav-btn" data-tab="weather" id="navWeatherBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          Project 1: Weather AI
+        </button>
       </nav>
 
       <div class="header-actions">
@@ -379,6 +383,150 @@
           </div>
         </div>
       </section>
+
+      <!-- TAB 5: PROJECT 1 — WEATHER PATTERN AI -->
+      <section class="tab-pane" id="tabWeather">
+        <div class="lab-grid">
+          <!-- Left Sidebar: Location, Dataset & Model Controls -->
+          <div class="lab-sidebar">
+            <div class="glass-panel">
+              <div class="panel-header">
+                <h3>Project 1: Weather AI</h3>
+                <button class="btn btn-secondary btn-sm" id="wUnitToggle">Unit: °C</button>
+              </div>
+
+              <div class="form-group">
+                <label for="wLocationSelect">Target Location (365-Day History)</label>
+                <select id="wLocationSelect" class="form-control">
+                  <option value="sf">San Francisco, CA (Maritime Fog)</option>
+                  <option value="tokyo">Tokyo, Japan (Humid Subtropical)</option>
+                  <option value="phoenix">Phoenix, AZ (Arid Desert)</option>
+                  <option value="reykjavik">Reykjavik, Iceland (Subpolar)</option>
+                </select>
+              </div>
+
+              <div class="weather-data-actions">
+                <button class="btn btn-secondary btn-sm" id="wBtnGenerateData">Regenerate 365d</button>
+                <button class="btn btn-secondary btn-sm" id="wBtnFetchLive">Fetch Live 365d (Open-Meteo)</button>
+              </div>
+
+              <div class="weather-stats-mini">
+                <div><span class="sub-label">Source:</span> <span id="wDataSourceBadge" class="badge">Simulated</span></div>
+                <div class="stats-row">
+                  <span>Window: <strong id="wStatDays">365 days</strong></span>
+                  <span>Avg T: <strong id="wStatMeanTemp">--</strong></span>
+                  <span>Avg Cloud: <strong id="wStatMeanCloud">--</strong></span>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="panel-header">
+                <h3>Neural Network Training</h3>
+                <span class="sub-label" id="wTrainProgress">Untrained</span>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col">
+                  <label for="wEpochsInput">Epochs</label>
+                  <input type="number" id="wEpochsInput" class="form-control" value="120" min="20" max="500" step="10">
+                </div>
+                <div class="form-group col">
+                  <label for="wHiddenInput">Hidden Units</label>
+                  <input type="number" id="wHiddenInput" class="form-control" value="12" min="4" max="32">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="wLrInput">Learning Rate (Adam)</label>
+                <input type="number" id="wLrInput" class="form-control" value="0.015" min="0.001" max="0.1" step="0.005">
+              </div>
+
+              <div class="control-row">
+                <label for="wChaosNoiseSlider">
+                  <span>Chaos Sensor Perturbation</span>
+                  <span class="sub-label" id="wChaosNoiseVal">0%</span>
+                </label>
+                <input type="range" id="wChaosNoiseSlider" min="0" max="100" value="0" class="range-slider">
+              </div>
+
+              <div class="action-buttons">
+                <button class="btn btn-primary btn-block" id="wBtnTrain">Train AI Model</button>
+                <button class="btn btn-secondary btn-block" id="wBtnTestNextDay" disabled>Test Next-Day vs Weather Model</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Viewport: KPIs, Charts & Log -->
+          <div class="lab-viewport">
+            <div class="telemetry-bar">
+              <div class="metric-card">
+                <div class="metric-label">AI Next-Day Prediction</div>
+                <div class="metric-value" id="wAiPredVal" style="color: var(--chaos-cyan);">--</div>
+                <div class="metric-sub">Day 366 Forecast</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Weather Model (NWP)</div>
+                <div class="metric-value" id="wNwpPredVal" style="color: var(--chaos-amber);">--</div>
+                <div class="metric-sub">Physical Baseline</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">AI vs Model Delta</div>
+                <div class="metric-value" id="wDeltaVal">--</div>
+                <div class="metric-sub">Next-day divergence</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">30-Day Holdout RMSE</div>
+                <div class="metric-value" id="wRmseVal">--</div>
+                <div class="metric-sub">Unseen test window</div>
+              </div>
+            </div>
+
+            <div class="glass-panel canvas-panel">
+              <div class="panel-header">
+                <div class="title-with-actions">
+                  <h3>365-Day Temperature & Cloud Coverage</h3>
+                  <span class="sub-label">Amber: Daily Mean Temp | Blue Bars: Cloud Cover (0-100%) | Dashed: 30d Test Split</span>
+                </div>
+              </div>
+              <div class="weather-chart-box">
+                <canvas id="wYearCanvas" height="190"></canvas>
+              </div>
+            </div>
+
+            <div class="weather-charts-split">
+              <div class="glass-panel canvas-panel">
+                <div class="panel-header">
+                  <h3>Training Loss Curve (RMSE)</h3>
+                </div>
+                <div class="weather-chart-box">
+                  <canvas id="wLossCanvas" height="170"></canvas>
+                </div>
+              </div>
+              <div class="glass-panel canvas-panel">
+                <div class="panel-header">
+                  <h3>30-Day Test & Day 366 Forecast</h3>
+                  <span class="sub-label">Green: Actual | Cyan: AI | Amber Dot: Weather Model</span>
+                </div>
+                <div class="weather-chart-box">
+                  <canvas id="wCompareCanvas" height="170"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-panel console-panel">
+              <div class="panel-header">
+                <div class="terminal-header-title">
+                  <span>Weather AI Training & Evaluation Log</span>
+                </div>
+              </div>
+              <div class="terminal-body" id="wLogOutput" style="height: 130px;">
+                <div class="log-line text-muted">[WeatherAI] Loaded 365-day temperature & cloud coverage series. Click 'Train AI Model' to begin.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Run Modal / Detailed Result Viewer -->
@@ -401,5 +549,6 @@
 
   <script src="experiments.js"></script>
   <script src="app.js"></script>
+  <script src="weather-lab.js"></script>
 </body>
 </html>

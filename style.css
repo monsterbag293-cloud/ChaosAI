@@ -1024,3 +1024,59 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Weather AI Project Styles */
+.weather-data-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.weather-stats-mini {
+  background: rgba(10, 14, 22, 0.45);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.78rem;
+}
+
+.weather-stats-mini .stats-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.weather-stats-mini .stats-row strong {
+  color: var(--text-primary);
+}
+
+.weather-chart-box {
+  width: 100%;
+  background: #080a0f;
+  border: 1px solid #141b26;
+  border-radius: var(--radius-sm);
+  padding: 6px;
+}
+
+.weather-chart-box canvas {
+  width: 100%;
+  display: block;
+}
+
+.weather-charts-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .weather-charts-split {
+    grid-template-columns: 1fr;
+  }
+}

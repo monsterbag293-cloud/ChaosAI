@@ -49,13 +49,18 @@ class ChaosApp {
         const activePane = document.getElementById(
           targetTab === 'lab' ? 'tabLab' :
           targetTab === 'builder' ? 'tabBuilder' :
-          targetTab === 'history' ? 'tabHistory' : 'tabMatrix'
+          targetTab === 'history' ? 'tabHistory' :
+          targetTab === 'weather' ? 'tabWeather' : 'tabMatrix'
         );
         if (activePane) activePane.classList.add('active');
 
         if (targetTab === 'lab') {
           this.resizeCanvas();
           this.renderCanvas();
+        } else if (targetTab === 'weather' && window.weatherLab) {
+          window.weatherLab.drawYearChart();
+          window.weatherLab.drawLossChart();
+          window.weatherLab.drawCompareChart();
         }
       });
     });
